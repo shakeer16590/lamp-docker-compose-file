@@ -1,0 +1,34 @@
+---
+version: '3'
+services:
+ db:
+  image: mysql:5.7
+  restart: always
+  environment:
+   MYSQL_ROOT_PASSWORD: intelliq
+   MYSQl_DATABASE: test_db 
+  volumes:
+   - db_data:/var/lib/mysql
+  ports:
+   - 8080:3306
+
+ adminer:
+  image: adminer
+  restart: always
+  ports:
+   - 8806:8080
+  depends_on:
+   - db
+
+ php-apache:
+  image: php:7.2.1-apache
+  ports:
+   - 80:80
+  volumes: 
+   - ./documents:/var/www/html
+  depends_on:
+   - db
+
+volumes:
+  db_data: {}
+...
